@@ -4,7 +4,9 @@ from cisc217_week13.main import TEMPLATES_DIR
 
 
 def read_template():
-    return (Path(TEMPLATES_DIR) / "index.html").read_text()
+    return (
+        Path(TEMPLATES_DIR) / "index.html"
+    ).read_text()
 
 
 def test_template_has_character_form():
@@ -16,7 +18,11 @@ def test_template_has_character_form():
 def test_template_has_accessible_form_fields():
     html = read_template()
 
-    for field in ("name", "health", "power"):
+    for field in (
+        "name",
+        "health",
+        "power",
+    ):
         assert f'id="{field}"' in html
         assert f'name="{field}"' in html
         assert f'for="{field}"' in html
@@ -39,4 +45,12 @@ def test_template_links_static_files():
 
     assert "styles.css" in html
     assert "app.js" in html
-    assert "url_for" in html
+
+    assert (
+        "request.scope.get("
+        "'root_path', ''"
+        ")"
+        in html
+    )
+
+    assert "window.APP_ROOT" in html
