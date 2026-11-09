@@ -2,7 +2,7 @@
 
 This lab adds a browser-based user interface to a working FastAPI character API.
 
-## Learning goals
+## Learning Goals
 
 You will practice:
 
@@ -25,7 +25,7 @@ python -m pytest -q
 
 Several tests should fail initially.
 
-## Required work
+## Required Work
 
 Complete the TODOs in:
 
@@ -36,18 +36,88 @@ Complete the TODOs in:
 
 Do not modify the provided tests unless instructed by your instructor.
 
-## Run the application
+## One-Time JupyterHub Setup
+
+Check whether `jupyter-server-proxy` is installed:
 
 ```bash
-uvicorn cisc217_week13.main:app --reload
+/opt/conda/bin/python -m pip show jupyter-server-proxy
 ```
 
-Open:
+If it is not installed:
 
-- http://127.0.0.1:8000/
-- http://127.0.0.1:8000/docs
+```bash
+/opt/conda/bin/python -m pip install --user jupyter-server-proxy
+```
 
-## Run tests
+Enable it:
+
+```bash
+/opt/conda/bin/jupyter server extension enable \
+  --py jupyter_server_proxy \
+  --user
+```
+
+Verify:
+
+```bash
+/opt/conda/bin/jupyter server extension list | grep -i -A3 proxy
+```
+
+You should see `jupyter_server_proxy enabled`.
+
+If you just installed or enabled it, restart your JupyterHub server/session before continuing.
+
+## Run the Application in JupyterHub
+
+Activate the project environment:
+
+```bash
+source .venv/bin/activate
+```
+
+Start the application:
+
+```bash
+uvicorn cisc217_week13.main:app \
+  --host 127.0.0.1 \
+  --port 8000 \
+  --root-path "${JUPYTERHUB_SERVICE_PREFIX}proxy/8000"
+```
+
+Leave that terminal running.
+
+Open the application:
+
+https://sdccd-jupyterhub.nrp-nautilus.io/hub/user-redirect/proxy/8000
+
+API documentation:
+
+https://sdccd-jupyterhub.nrp-nautilus.io/hub/user-redirect/proxy/8000/docs
+
+## Troubleshooting
+
+Verify that FastAPI itself is responding:
+
+```bash
+curl -i http://127.0.0.1:8000/
+```
+
+A working application should return:
+
+```text
+HTTP/1.1 200 OK
+```
+
+If FastAPI responds but the browser displays a Jupyter 404 page, verify:
+
+```bash
+/opt/conda/bin/jupyter server extension list | grep -i -A3 proxy
+```
+
+If the extension was just installed or enabled, restart your JupyterHub server/session and start Uvicorn again.
+
+## Run Tests
 
 ```bash
 python -m pytest -q

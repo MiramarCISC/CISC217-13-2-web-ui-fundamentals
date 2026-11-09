@@ -7,6 +7,19 @@
  * FastAPI endpoints rather than storing character data in JavaScript.
  */
 
+/*
+ * Provided helper.
+ *
+ * The application may run directly on localhost or behind JupyterHub.
+ * Use apiUrl("/path") for browser requests so both environments work.
+ */
+const APP_ROOT = window.APP_ROOT || "";
+
+function apiUrl(path) {
+    return `${APP_ROOT}${path}`;
+}
+
+
 const characterList = document.querySelector("#character-list");
 const characterForm = document.querySelector("#character-form");
 const refreshButton = document.querySelector("#refresh-button");
@@ -29,7 +42,7 @@ function renderCharacters(characters) {
 
 async function loadCharacters() {
     // TODO:
-    // GET /characters using fetch().
+    // GET /characters using fetch(apiUrl("/characters")).
     // Convert the response to JSON.
     // Pass the result to renderCharacters().
 }
@@ -40,7 +53,7 @@ async function createCharacter(event) {
 
     // TODO:
     // Read name, health, and power from the form.
-    // POST JSON to /characters.
+    // POST JSON to apiUrl("/characters").
     //
     // Required request headers:
     //     "Content-Type": "application/json"
@@ -56,8 +69,10 @@ if (characterForm) {
     characterForm.addEventListener("submit", createCharacter);
 }
 
+
 if (refreshButton) {
     refreshButton.addEventListener("click", loadCharacters);
 }
+
 
 // TODO: Load characters when the page first opens.

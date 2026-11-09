@@ -7,7 +7,11 @@
     <!-- TODO: Display the title passed by FastAPI. -->
     <title>TODO</title>
 
-    <!-- TODO: Link /static/styles.css using url_for(). -->
+    <!-- Provided: proxy-aware static stylesheet path. -->
+    <link
+        rel="stylesheet"
+        href="{{ request.scope.get('root_path', '') }}/static/styles.css"
+    >
 </head>
 <body>
     <main class="container">
@@ -48,6 +52,14 @@
         </section>
     </main>
 
-    <!-- TODO: Link /static/app.js using url_for(). -->
+    <!-- Provided: expose FastAPI's root path so app.js works locally and in JupyterHub. -->
+    <script>
+        window.APP_ROOT = "{{ request.scope.get('root_path', '') }}";
+    </script>
+
+    <!-- Provided: proxy-aware static JavaScript path. -->
+    <script
+        src="{{ request.scope.get('root_path', '') }}/static/app.js"
+    ></script>
 </body>
 </html>
