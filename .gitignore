@@ -1,8 +1,31 @@
+# Python virtual environments
 .venv/
+venv/
+env/
+
+# Python bytecode and caches
 __pycache__/
 *.py[cod]
+*$py.class
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# pytest and coverage
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
+
+# Packaging/build artifacts
 *.egg-info/
+build/
+dist/
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# OS files
 .DS_Store
+Thumbs.db
